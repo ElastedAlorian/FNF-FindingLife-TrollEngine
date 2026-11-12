@@ -115,7 +115,7 @@ class AnimationDebug extends FlxState
 
 		
 		if (FlxG.keys.justPressed.ENTER)
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(()->new PlayState());
 
 		if (FlxG.keys.justPressed.E)
 			FlxG.camera.zoom += 0.25;

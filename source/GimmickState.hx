@@ -121,7 +121,7 @@ class GimmickState extends MusicBeatState
 			else
 			{
 				if (controls.BACK)
-					FlxG.switchState(new FreeplayState());
+					FlxG.switchState(()->new FreeplayState());
 				if (controls.UP_P)
 					changeSelection(-1);
 				if (controls.DOWN_P)

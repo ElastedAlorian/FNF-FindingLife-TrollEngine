@@ -57,7 +57,7 @@ class FreeplayState extends MusicBeatState
 			}
 		 */
 
-		#if desktop
+		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -180,7 +180,7 @@ class FreeplayState extends MusicBeatState
 	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
 	{
 		if (songCharacters == null)
-			songCharacters = ['bf'];
+			songCharacters = ['face'];
 
 		var num:Int = 0;
 		for (song in songs)
@@ -237,7 +237,7 @@ class FreeplayState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new MainMenuState());
+			FlxG.switchState(()->new MainMenuState());
 		}
 
 		if (accepted)
@@ -254,7 +254,7 @@ class FreeplayState extends MusicBeatState
 			trace('CUR WEEK' + PlayState.storyWeek);
 			if(gimmick) {
 				PlayState.gimmick = true;
-				FlxG.switchState(new GimmickState());
+				FlxG.switchState(()->new GimmickState());
 			}
 			else {
 				PlayState.gimmick = false;
@@ -273,8 +273,15 @@ class FreeplayState extends MusicBeatState
 			curDifficulty = 0;
 
 		#if !switch
+		//trace ("1st Area Tracing - Intended Highscore: " +  Highscore.getScore(songs[curSelected].songName, curDifficulty)); // [10192,3]
+
+		//trace( "1st Area Tracing - Song: " + songs[curSelected] + " curDifficulty: " + curDifficulty);
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 		#end
+		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+
+				trace('Selected: ' + songs[curSelected].songName + ' on ${diffText.text}');
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4); // I feel this would be a nice addition.
 
 		switch (curDifficulty)
 		{
@@ -289,11 +296,9 @@ class FreeplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		NGio.logEvent('Fresh');
-		#end
 		trace(openfl.Assets.cache.removeSound(Paths.inst(songs[curSelected].songName.toLowerCase()))); //did le cache get removed?
 		// NGio.logEvent('Fresh');
+		trace('Selected: ' + songs[curSelected].songName + ' on ${diffText.text}');
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;
@@ -307,6 +312,9 @@ class FreeplayState extends MusicBeatState
 
 		#if !switch
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
+		//trace                       ("2nd Area Tracing - Intended Value: " +  Highscore.getScore(songs[curSelected].songName, curDifficulty)); // [10192,3]
+		//trace( "2nd Area Tracing - Song: " + songs[curSelected] + " curDifficulty: " + curDifficulty);
+
 		// lerpScore = 0;
 		#end
 

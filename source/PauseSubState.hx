@@ -9,7 +9,7 @@ import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -46,7 +46,7 @@ class PauseSubState extends MusicBeatSubstate
 				kbd = "DFJK";
 		}
 
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		pauseMusic = new FlxSound().load(Paths.music('breakfast'), true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 
@@ -153,7 +153,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Restart Song":
 					FlxG.resetState();
 				case "Charting Menu":
-					FlxG.switchState(new ChartingState());
+					FlxG.switchState(()->new ChartingState());
 				case "Control Scheme":
 					if(kbd=="WASD"){
 						kbd = "DFJK";
@@ -179,7 +179,7 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.resetState();
 					//FlxG.resetState();
 				case "Exit to menu":
-					FlxG.switchState(PlayState.isStoryMode?new MainMenuState():new FreeplayState());
+					FlxG.switchState(PlayState.isStoryMode?()->new MainMenuState():()->new FreeplayState());
 			}
 		}
 

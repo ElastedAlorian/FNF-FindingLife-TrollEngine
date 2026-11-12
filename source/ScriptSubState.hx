@@ -1,6 +1,6 @@
 package;
 
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.math.FlxPoint;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
@@ -34,7 +34,7 @@ class ScriptSubState extends MusicBeatSubstate
 	public function new()
 	{
 		super();
-		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
+		pauseMusic = new FlxSound().load(Paths.music('breakfast'), true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
 

@@ -72,7 +72,7 @@ class ScriptState extends MusicBeatState
 			else
 			{
 				if (controls.BACK)
-					FlxG.switchState(new OptionsMenu());
+					FlxG.switchState(()->new OptionsMenu());
 				if (controls.UP_P)
 					changeSelection(-1);
 				if (controls.DOWN_P)

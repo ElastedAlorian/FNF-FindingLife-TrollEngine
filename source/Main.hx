@@ -90,7 +90,7 @@ class Main extends Sprite
 		{
 			var ratioX:Float = stageWidth / gameWidth;
 			var ratioY:Float = stageHeight / gameHeight;
-			zoom = Math.min(ratioX, ratioY);
+			//zoom = Std.int(Math.min(ratioX, ratioY));
 			gameWidth = Math.ceil(stageWidth / zoom);
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
@@ -98,8 +98,9 @@ class Main extends Sprite
 		#if !debug
 		initialState = TitleState;
 		#end
-		addChild(new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen));
-
+		// new(gameWidth:Int = 0, gameHeight:Int = 0, ?initialState:InitialState, updateFramerate:Int = 60, drawFramerate:Int = 60, skipSplash:Bool = false, startFullscreen:Bool = false)
+		addChild(new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen));
+//		addChild(new FlxGame(1280, 720, TitleState, zoom, framerate, framerate, skipSplash, startFullscreen));
 		#if !mobile
 		addChild(new FPS_Mem(10, 3, 0xFFFFFF));
 		#end

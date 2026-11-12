@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://lime.software/project/1.0.2 http://lime.software/xsd/project-1.0.2.xsd">
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="TrollEngine" file="TrollEngine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="troll-1.1.4" company="ninjamuffin99"/>
+	<app title="TrollEngine" file="TrollEngine" packageName="com.ninjamuffin99.funkin" package="com.ninjamuffin99.funkin" main="Main" version="1.1.4" company="ninjamuffin99"/>
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -20,10 +20,10 @@
 	<!-- ____________________________ Window Settings ___________________________ -->
 
 	<!--These window settings apply to all targets-->
-	<window width="1280" height="720" fps="" background="#000000" hardware="true" vsync="false" />
+	<window width="1280" height="720" background="#000000" hardware="true" vsync="false" />
 
-	<!--HTML5-specific-->
-	<window if="html5" resizable="true" />
+	<!--HTML5-specific. I don't want this to end up on those stupid website reupload pages. -->
+	<!-- <window if="html5" resizable="true" /> -->
 
 	<!--Desktop-specific-->
 	<window if="desktop" orientation="landscape" fullscreen="false" resizable="true" vsync="false"/>
@@ -118,30 +118,23 @@
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
-	<haxelib name="discord_rpc" />
+	<!--<haxelib name="discord_rpc" />-->
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
-	<haxelib name="newgrounds"/>
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name="polymod"/>
+	<!--<haxelib name="polymod"/>-->
 	<haxelib name="hxcpp-debug-server" if="debug" unless="html5" />
-	<haxelib name="discord_rpc" if="desktop"/>
-	<haxelib name="flixel-studio" if="debug"/>
+	<!--<haxelib name="discord_rpc" if="desktop"/>
+	<haxelib name="flixel-studio" if="debug"/>-->
 	<!-- TOGGLES FOR COMPILATION! REMOVE ONE IF YOU DON"T WANT ONE COMPILED -->
 
-	<haxedef name="updatecheck" /> <!-- Check for Updates -->
-	<haxedef name="fnfnet" /> <!-- FNFNet -->
-	<haxedef name="charselection" /> <!-- Character Selection -->
-	<haxedef name="gimmick" /> <!-- Gimmicks in the freeplay menu -->
-	<haxedef name="skipsong"/>
-	<!--<haxedef name="antifnfbot"/> ONLY UNCHECK THIS IF YOU ARE SURE YOU DO NOT WANT PEOPLE DOING NAUGHTY HACKS IN YOUR MOD-->
+	<!--<haxedef name="updatecheck" />  Check for Updates ->
+	<haxedef name="fnfnet" /> <!- FNFNet ->
+	<haxedef name="charselection" /> <!- Character Selection ->
+	<haxedef name="gimmick" /> <!- Gimmicks in the freeplay menu ->
+	<haxedef name="skipsong"/>-->
+	<haxedef name="antifnfbot"/> ONLY UNCHECK THIS IF YOU ARE SURE YOU DO NOT WANT PEOPLE DOING NAUGHTY HACKS IN YOUR MOD-->
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
-
-	<!-- <haxelib name="markdown" /> -->
-	<!-- <haxelib name="HtmlParser" /> -->
-
-	<!--In case you want to use nape with flixel-->
-	<!--<haxelib name="nape-haxe4" />-->
 
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
@@ -177,6 +170,13 @@
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
 
+	<!-- Haxe 4.3.0+: Enable pretty syntax errors and stuff. -->
+	<!-- pretty (haxeflixel default), indent, classic (haxe compiler default) -->
+	<haxedef name="message.reporting" value="pretty" />
+
+	<!--Disable deprecated warnings. Not actually used, but it does feel like it is when initially compiled.
+	<haxedef name='no-deprecation-warnings' /> .-->
+
 	<!-- _________________________________ Custom _______________________________ -->
 
 	<!--Place custom nodes like icons here (higher priority to override the HaxeFlixel icon)-->
@@ -185,9 +185,4 @@
 	<icon path="art/icon32.png" size='32'/>
 	<icon path="art/icon64.png" size='64'/>
 	<icon path="art/iconOG.png" />
-
-
-	<!-- <haxedef name="SKIP_TO_PLAYSTATE" if="debug" /> -->
-	<haxedef name="NG_LOGIN" if="newgrounds" />
-	
 </project>

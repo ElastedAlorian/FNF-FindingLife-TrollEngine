@@ -2,7 +2,7 @@ package;
 
 import openfl.utils.AssetCache;
 import flixel.util.FlxSave;
-#if desktop
+#if discord_rpc
 import Discord.DiscordClient;
 #end
 import Section.SwagSection;
@@ -28,7 +28,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -106,8 +106,8 @@ class PlayState extends MusicBeatState
 
 	public static var iconP1:HealthIcon;
 	public static var iconP2:HealthIcon;
-	private var camHUD:FlxCamera;
 	private var camGame:FlxCamera;
+		private var camHUD:FlxCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -146,7 +146,7 @@ class PlayState extends MusicBeatState
 
 	var inCutscene:Bool = false;
 	public static var holymoly:Int = FlxG.random.int(0, 600);
-	#if desktop
+	#if discord_rpc
 	// Discord RPC variables
 	var storyDifficultyText:String = "";
 	var iconRPC:String = "";
@@ -180,13 +180,20 @@ class PlayState extends MusicBeatState
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
-		camHUD = new FlxCamera();
-		camHUD.bgColor.alpha = 0;
+			//static final BACKGROUND_COLOR:FlxColor = FlxColor.MAGENTA;
+			//camGame.bgColor = BACKGROUND_COLOR; // Show a pink background behind the stage. However this also turns the game over screen pink.
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD);
+		// source/PlayState.hx:189: characters 13-27 : Class<flixel.FlxCamera> has no field defaultCameras (Suggestions: _defaultCameras, set_defaultCameras, get_defaultCameras)
+		//FlxCamera.defaultCameras = [camGame];
+		//FlxG.cameras.setDefaultDrawTarget(camGame, true);
+		//FlxCamera.set_defaultCameras = [camGame];
+		//FlxG.cameras.add(camGame, false); // Thanks https://github.com/HaxeFlixel/flixel/discussions/2347
 
-		FlxCamera.defaultCameras = [camGame];
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+		FlxG.cameras.add(camHUD, false);
+		add(camHUD);
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -224,7 +231,7 @@ class PlayState extends MusicBeatState
 				dialogue = CoolUtil.coolTextFile(Paths.txt('thorns/thornsDialogue'));
 		}
 
-		#if desktop
+		#if discord_rpc
 		// Making difficulty text for Discord Rich Presence.
 		switch (storyDifficulty)
 		{
@@ -317,7 +324,7 @@ class PlayState extends MusicBeatState
 			phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train'));
 			add(phillyTrain);
 
-			trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
+			trainSound = new FlxSound().load(Paths.sound('train_passes'));
 			FlxG.sound.list.add(trainSound);
 
 			// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);
@@ -1152,7 +1159,7 @@ class PlayState extends MusicBeatState
 		});
 		#end
 		#end
-		#if desktop
+		#if discord_rpc
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
 
@@ -1173,7 +1180,7 @@ class PlayState extends MusicBeatState
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+			vocals = new FlxSound().load(Paths.voices(PlayState.SONG.song));
 		else
 			vocals = new FlxSound();
 
@@ -1417,7 +1424,7 @@ class PlayState extends MusicBeatState
 				startTimer.active = true;
 			paused = false;
 
-			#if desktop
+			#if discord_rpc
 			if (startTimer.finished)
 			{
 				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC, true, songLength - Conductor.songPosition);
@@ -1434,7 +1441,7 @@ class PlayState extends MusicBeatState
 
 	override public function onFocus():Void
 	{
-		#if desktop
+		#if discord_rpc
 		if (health > 0 && !paused)
 		{
 			if (Conductor.songPosition > 0.0)
@@ -1453,7 +1460,7 @@ class PlayState extends MusicBeatState
 	
 	override public function onFocusLost():Void
 	{
-		#if desktop
+		#if discord_rpc
 		if (health > 0 && !paused)
 		{
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
@@ -1522,12 +1529,12 @@ class PlayState extends MusicBeatState
 			if (FlxG.random.bool(0.1))
 			{
 				// gitaroo man easter egg
-				FlxG.switchState(new GitarooPause());
+				FlxG.switchState(()->new GitarooPause());
 			}
 			else
 				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 		
-			#if desktop
+			#if discord_rpc
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 			#end
 		}
@@ -1540,9 +1547,9 @@ class PlayState extends MusicBeatState
 		}
 		if (FlxG.keys.justPressed.SEVEN)
 		{
-			FlxG.switchState(new ChartingState());
+			FlxG.switchState(()->new ChartingState());
 
-			#if desktop
+			#if discord_rpc
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
 		}
@@ -1575,11 +1582,11 @@ class PlayState extends MusicBeatState
 			iconP2.animation.curAnim.curFrame = 0;
 
 		/* if (FlxG.keys.justPressed.NINE)
-			FlxG.switchState(new Charting()); */
+			FlxG.switchState(()->new Charting()); */
 
 		#if debug
 		if (FlxG.keys.justPressed.EIGHT)
-			FlxG.switchState(new AnimationDebug(SONG.player2));
+			FlxG.switchState(()->new AnimationDebug(SONG.player2));
 		#end
 
 		if (startingSong)
@@ -1699,7 +1706,7 @@ class PlayState extends MusicBeatState
 					gfSpeed = 1;
 				case 163:
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new TitleState());
+					// FlxG.switchState(()->new TitleState());
 			}
 		}
 
@@ -1710,7 +1717,7 @@ class PlayState extends MusicBeatState
 				case 128, 129, 130:
 					vocals.volume = 0;
 					// FlxG.sound.music.stop();
-					// FlxG.switchState(new PlayState());
+					// FlxG.switchState(()->new PlayState());
 			}
 		}
 		// better streaming of shit
@@ -1752,9 +1759,9 @@ class PlayState extends MusicBeatState
 
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
-				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				// FlxG.switchState(()->new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				
-				#if desktop
+				#if discord_rpc
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 				#end
@@ -1938,14 +1945,13 @@ class PlayState extends MusicBeatState
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
-				FlxG.switchState(new StoryMenuState());
+				FlxG.switchState(()->new StoryMenuState());
 
 				// if ()
 				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
 
 				if (SONG.validScore)
 				{
-					NGio.unlockMedal(60961);
 					Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 				}
 
@@ -1989,7 +1995,7 @@ class PlayState extends MusicBeatState
 		else
 		{
 			trace('WENT BACK TO FREEPLAY??');
-			FlxG.switchState(new FreeplayState());
+			FlxG.switchState(()->new FreeplayState());
 		}
 	}
 
@@ -2121,9 +2127,9 @@ class PlayState extends MusicBeatState
 	
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 	
-				// FlxG.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				// FlxG.switchState(()->new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 				
-				#if desktop
+				#if discord_rpc
 				// Game Over doesn't get his own variable because it's only used here
 				DiscordClient.changePresence("Game Over - " + detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 				#end

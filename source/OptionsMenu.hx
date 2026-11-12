@@ -285,7 +285,7 @@ class OptionsMenu extends MusicBeatState
 							initSettings(false, 4, kbd);
 						}
 					case "Scripts":
-						FlxG.switchState(new ScriptState());	
+						FlxG.switchState(()->new ScriptState());
 					case "Kade Input":
 						if(FlxG.save.data.kadeinput != null)FlxG.save.data.kadeinput = !FlxG.save.data.kadeinput;
 						else FlxG.save.data.kadeinput = true;
@@ -314,7 +314,7 @@ class OptionsMenu extends MusicBeatState
 			{
 				if (controls.BACK){
 					FlxG.save.flush();
-					FlxG.switchState(new MainMenuState());
+					FlxG.switchState(()->new MainMenuState());
 				}
 				if (controls.UP_P)
 					changeSelection(-1);

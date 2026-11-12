@@ -2,6 +2,8 @@ package;
 
 #if desktop
 import sys.io.File;
+#end
+#if discord_rpc
 import Discord.DiscordClient;
 #end
 import flixel.FlxG;
@@ -15,7 +17,6 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import io.newgrounds.NG;
 import lime.app.Application;
 
 using StringTools;
@@ -36,7 +37,7 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	override function create()
 	{
-		#if desktop
+		#if discord_rpc
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
@@ -87,7 +88,7 @@ class MainMenuState extends MusicBeatState
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
+ 			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
 			menuItem.frames = tex;
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
@@ -153,7 +154,7 @@ class MainMenuState extends MusicBeatState
 
 			if (controls.BACK)
 			{
-				FlxG.switchState(new TitleState());
+				FlxG.switchState(()->new TitleState());
 			}
 			#if charselection
 			if (FlxG.keys.justPressed.LEFT){
@@ -206,14 +207,14 @@ class MainMenuState extends MusicBeatState
 								{
 									case 'story mode':
 										notPlaying = false;
-										FlxG.switchState(new StoryMenuState());
+										FlxG.switchState(()->new StoryMenuState());
 										trace("Story Menu Selected");
 									case 'freeplay':
-										FlxG.switchState(new FreeplayState());
+										FlxG.switchState(()->new FreeplayState());
 
 										trace("Freeplay Menu Selected");
 									case 'options':
-										FlxG.switchState(new OptionsMenu());
+										FlxG.switchState(()->new OptionsMenu());
 								}
 							});
 						}

@@ -1,15 +1,17 @@
 package;
 
 import openfl.net.URLRequest;
-import polymod.Polymod.Framework;
+//import polymod.Polymod.Framework;
 import lime.utils.AssetCache;
 import Controls;
 import flixel.util.FlxSave;
 #if desktop
 import sys.io.File;
 import sys.FileSystem;
-import Discord.DiscordClient;
 import sys.thread.Thread;
+#end
+#if discord_rpc
+import Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -24,14 +26,13 @@ import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.system.ui.FlxSoundTray;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
-import io.newgrounds.NG;
 import lime.app.Application;
 import lime.utils.Assets;
 import Controls.KeyboardScheme;
@@ -75,14 +76,6 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		NGio.noLogin(APIStuff.API);
-
-		#if ng
-		var ng:NGio = new N
-		Gio(APIStuff.API, APIStuff.EncKey);
-		trace('NEWGROUNDS LOL');
-		#end
-
 		FlxG.save.bind('funkin', 'ninjamuffin99');
 		Config.initsave();
 		Highscore.load();
@@ -112,7 +105,7 @@ class TitleState extends MusicBeatState
 		});
 		#end
 
-		#if desktop
+		#if discord_rpc
 		DiscordClient.initialize();
 		
 		Application.current.onExit.add (function (exitCode) {
@@ -121,9 +114,9 @@ class TitleState extends MusicBeatState
 		 });
 		#end
 
-		#if debug
+		/*#if FlxStudio
 		flixel.addons.studio.FlxStudio.create();
-		#end
+		#end*/
 	}
 
 	var logoBl:FlxSprite;
@@ -297,15 +290,7 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
-		if (pressedEnter && !transitioning && skippedIntro)
-		{
-			#if !switch
-			NGio.unlockMedal(60960);
-
-			// If it's Friday according to da clock
-			if (Date.now().getDay() == 5)
-				NGio.unlockMedal(61034);
-			#end
+		if (pressedEnter && !transitioning && skippedIntro){
 
 			titleText.animation.play('press');
 
@@ -330,10 +315,10 @@ class TitleState extends MusicBeatState
 				}
 				else
 				{
-					FlxG.switchState(new MainMenuState());
+					FlxG.switchState(()->new MainMenuState());
 				}
 				#else
-				FlxG.switchState(new MainMenuState());
+				FlxG.switchState(()->new MainMenuState());
 				#end
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);

@@ -6,7 +6,7 @@ import Song.SwagSong;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.ui.FlxInputText;
+import flixel.text.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
@@ -19,7 +19,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.system.FlxSound;
+import flixel.sound.FlxSound;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.ui.FlxSpriteButton;
@@ -175,7 +175,7 @@ class ChartingState extends MusicBeatState
 
 	function addSongUI():Void
 	{
-		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
+		var UI_songTitle = new FlxInputText(10, 10, 70, _song.song, 8);
 		typingShit = UI_songTitle;
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);
@@ -354,7 +354,7 @@ class ChartingState extends MusicBeatState
 		FlxG.sound.playMusic(Paths.inst(daSong), 0.6);
 
 		// WONT WORK FOR TUTORIAL OR TEST SONG!!! REDO LATER
-		vocals = new FlxSound().loadEmbedded(Paths.voices(daSong));
+		vocals = new FlxSound().load(Paths.voices(daSong));
 		FlxG.sound.list.add(vocals);
 
 		FlxG.sound.music.pause();
@@ -547,7 +547,7 @@ class ChartingState extends MusicBeatState
 			PlayState.SONG = _song;
 			FlxG.sound.music.stop();
 			vocals.stop();
-			FlxG.switchState(new PlayState());
+			FlxG.switchState(()->new PlayState());
 		}
 
 		if (FlxG.keys.justPressed.E)

@@ -1,12 +1,14 @@
 package;
 
 import Sys.sleep;
+#if discord_rpc
 import discord_rpc.DiscordRpc;
-
+#end
 using StringTools;
 
 class DiscordClient
 {
+#if discord_rpc
 	public function new()
 	{
 		trace("Discord Client starting...");
@@ -84,4 +86,5 @@ class DiscordClient
 
 		//trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');
 	}
+#end
 }

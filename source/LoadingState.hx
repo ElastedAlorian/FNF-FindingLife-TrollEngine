@@ -44,7 +44,7 @@ class LoadingState extends MusicBeatState
 		logo.updateHitbox();
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
-		var ldBG = new FlxSprite(0, 0).loadGraphic(Paths.image('loadyBG'));
+		var ldBG = new FlxSprite(0, 0).loadGraphic(Paths.image('funkay'));
 		var loading = new FlxSprite(0, FlxG.height * 0.5).loadGraphic(Paths.image('loadingLoader'));
 		loading.screenCenter(X);
 		var motherfunkers = new FlxSprite(0, 0).loadGraphic(Paths.image('loadingFunkers'));
@@ -56,9 +56,9 @@ class LoadingState extends MusicBeatState
 		motherfunkers.antialiasing = true;
 		loading.antialiasing = true;
 		//bgColor = 0xcaff4d;
-		add(ldBG);
-		add(motherfunkers);
-		add(loading);
+		//add(ldBG);
+		//add(motherfunkers);
+		//add(loading);
 		
 		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -147,7 +147,7 @@ class LoadingState extends MusicBeatState
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
-		FlxG.switchState(target);
+		FlxG.switchState(()->target);
 	}
 	
 	static function getSongPath()
@@ -162,7 +162,7 @@ class LoadingState extends MusicBeatState
 	
 	inline static public function loadAndSwitchState(target:FlxState, stopMusic = false)
 	{
-		FlxG.switchState(getNextState(target, stopMusic));
+		FlxG.switchState(()->getNextState(target, stopMusic));
 	}
 	
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
