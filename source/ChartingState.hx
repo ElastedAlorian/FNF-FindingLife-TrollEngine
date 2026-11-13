@@ -115,13 +115,18 @@ class ChartingState extends MusicBeatState
 		{
 			_song = {
 				song: 'Test',
+					songFancy: 'Test',
+					songArtists: 'Unknown Artist',
+					songCharters: 'You',
 				notes: [],
 				bpm: 150,
 				needsVoices: true,
 				player1: 'bf',
+				gf: 'gf',
 				player2: 'dad',
+				stage: 'stage',
 				speed: 1,
-				validScore: false
+				validScore: false,
 			};
 		}
 

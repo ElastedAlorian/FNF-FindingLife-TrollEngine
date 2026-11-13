@@ -10,6 +10,9 @@ using StringTools;
 typedef SwagSong =
 {
 	var song:String;
+		var songFancy:String; // Added
+		var songArtists:String; // Added
+		var songCharters:String; // Added
 	var notes:Array<SwagSection>;
 	var bpm:Int;
 	var needsVoices:Bool;
@@ -17,12 +20,18 @@ typedef SwagSong =
 
 	var player1:String;
 	var player2:String;
+	var gf:String; // Added
+	var stage:String; // Added
+
 	var validScore:Bool;
 }
 
 class Song
 {
 	public var song:String;
+		public var songFancy:String; // Added
+		public var songArtists:String; // Added
+		public var songCharters:String; // Added
 	public var notes:Array<SwagSection>;
 	public var bpm:Int;
 	public var needsVoices:Bool = true;
@@ -30,6 +39,9 @@ class Song
 
 	public var player1:String = 'bf';
 	public var player2:String = 'dad';
+	public var gf:String = 'gf'; // Added
+	public var stage:String; // Added
+
 
 	public function new(song, notes, bpm)
 	{
