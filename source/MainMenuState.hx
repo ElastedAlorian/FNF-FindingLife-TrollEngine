@@ -119,10 +119,16 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, null, 0.06);
 
-		var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version'), 12);
+		/*var versionShit:FlxText = new FlxText(5, FlxG.height - 18, 0, "v" + Application.current.meta.get('version'), 12);
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(versionShit);
+		add(versionShit);*/
+
+		var versionInfo:FlxText = new FlxText(5, FlxG.height - (16 * 3 + 3), 0);
+		versionInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		versionInfo.scrollFactor.set();
+		add(versionInfo);
+		versionInfo.text = "Friday Night Funkin' - v0.2.7 (with future changes backported)\nTroll Engine - v1.1.4\nFinding Life - v0.1";
 
 		// NG.core.calls.event.logEvent('swag').send();
 

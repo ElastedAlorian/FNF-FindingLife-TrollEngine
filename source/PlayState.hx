@@ -261,6 +261,25 @@ class PlayState extends MusicBeatState
 				iconRPC = 'mom';
 		}
 
+		switch (SONG.song.toLowerCase()){ // Failed attempt at getting the proper stages to load without a stage value in JSON.
+			case "tutorial":
+				storyWeek = 0;
+			case "bopeebo" | "fresh" | "dadbattle":
+				storyWeek = 1;
+			case "spookeez" | "south" | "monster":
+				storyWeek = 2;
+			case "pico" | "philly" | "blammed":
+				storyWeek = 3;
+			case "high" | "satin-panties":
+				storyWeek = 4;
+			case "cocoa" | "eggnog" | "winter-horrorland"
+				storyWeek = 5;
+			case "senpai" | "roses" | "thorns":
+				storyWeek = 6;
+			//case "tutorial":
+				//storyWeek = 0;
+		}
+
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
 		{

@@ -62,7 +62,7 @@ class HealthIcon extends FlxSprite
 		scrollFactor.set();
 	}
 	public function changeIcon(char:String, isPlayer:Bool = false){
-		loadGraphic(Paths.image("icon-"+char, "characters"), true, 150, 150);
+		loadGraphic(Paths.image("icons/icon-"+char), true, 150, 150);
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		animation.play(char);
 	}
