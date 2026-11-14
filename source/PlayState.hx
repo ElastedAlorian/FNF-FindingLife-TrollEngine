@@ -160,6 +160,17 @@ class PlayState extends MusicBeatState
 	// Custom!
 		public static var Stage:Stage; // Kade Engine
 
+		// From my previous implementation on JSON sprite spawning.
+			var currentSpriteLoader:Array<Dynamic>;
+			public var levelSprite:FlxSprite;
+			public var parsedFile = haxe.Json.parse("{ }"); // The reason that there's two curly brackets is so that we can make the variable into a JSON later and not at the start. This is so we can use different JSON files and not worry about any errors further on!
+			public var stageSpriteCollection:FlxTypedGroup<FlxSprite>; //Maybe.
+
+		// From current subimplementation.
+				public 	var stageCheck:String = 'stage'; // Kade Engine
+				public 	var stageType:String = 'hardcoded'; // Custom method, trying to differenciate the old and new formats.
+
+
 	override public function create()
 	{
 		clearCache();
@@ -185,15 +196,8 @@ class PlayState extends MusicBeatState
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
-			//static final BACKGROUND_COLOR:FlxColor = FlxColor.MAGENTA;
-			//camGame.bgColor = BACKGROUND_COLOR; // Show a pink background behind the stage. However this also turns the game over screen pink.
 
 		FlxG.cameras.reset(camGame);
-		// source/PlayState.hx:189: characters 13-27 : Class<flixel.FlxCamera> has no field defaultCameras (Suggestions: _defaultCameras, set_defaultCameras, get_defaultCameras)
-		//FlxCamera.defaultCameras = [camGame];
-		//FlxG.cameras.setDefaultDrawTarget(camGame, true);
-		//FlxCamera.set_defaultCameras = [camGame];
-		//FlxG.cameras.add(camGame, false); // Thanks https://github.com/HaxeFlixel/flixel/discussions/2347
 
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -261,7 +265,7 @@ class PlayState extends MusicBeatState
 				iconRPC = 'mom';
 		}
 
-		switch (SONG.song.toLowerCase()){ // Failed attempt at getting the proper stages to load without a stage value in JSON.
+		/*switch (SONG.song.toLowerCase()){ // Failed attempt at getting the proper stages to load without a stage value in JSON.
 			case "tutorial":
 				storyWeek = 0;
 			case "bopeebo" | "fresh" | "dadbattle":
@@ -278,7 +282,8 @@ class PlayState extends MusicBeatState
 				storyWeek = 6;
 			//case "tutorial":
 				//storyWeek = 0;
-		}
+		}*/ // It may have something to do with the stages not being able to switch in the chart editor.
+		trace ('Current Song (${SONG.song.toLowerCase()}) + Week ($storyWeek)');
 
 		// String that contains the mode defined here so it isn't necessary to call changePresence for each mode
 		if (isStoryMode)
@@ -308,9 +313,9 @@ class PlayState extends MusicBeatState
 
 
 		// Method borrowed from Kade Engine
-					var stageCheck:String = 'stage';
+					// variables moved upwards
 							// If the stage isn't specified in the chart, we use the story week value.
-					if (SONG.stage == null)
+					if (SONG.stage == null) // Checks if the song lacks a stage in the JSON file.
 					{
 						switch (storyWeek)
 						{
@@ -340,10 +345,21 @@ class PlayState extends MusicBeatState
 								}
 								// i should check if its stage (but this is when none is found in chart anyway)
 						}
+
+						stageType = "hardcoded";
 					}
-					else
+					else // Otherwise, it looks to see if the song has a JSON file.
 					{
 						stageCheck = SONG.stage;
+
+						if (Paths.doesTextAssetExist('data/stages/$SONG.stage')){
+							stageType = "json";
+						}else{
+						//	if (SONG.stage != null)
+								stageType = "hardcoded"; // Incase anyone adds their stage to stage.hx
+							//else
+								//SONG.stage =
+						}
 					}
 
 		var gfVersion:String = 'gf';
@@ -463,7 +479,11 @@ class PlayState extends MusicBeatState
 		//add(boyfriend);
 
 		// Kade Engine Method
-					Stage = new Stage(SONG.stage);
+		if (stageType == null){
+				SONG.stage = "stage";
+				stageType = "hardcoded";
+		}if (stageType == "hardcoded"){
+			Stage = new Stage(SONG.stage);
 
 				var positions = Stage.positions[Stage.curStage];
 				if (positions != null)
@@ -496,6 +516,71 @@ class PlayState extends MusicBeatState
 									add(bg);
 					}
 				}
+		}else if (stageType == "json"){
+			var requestedStage:String = 'data/stages/${SONG.stage}.json'; // So I don't have to type much.
+
+			// Loading JSON File and Confirms Load
+					//if (curStage == null || curStage.length < 1) curStage = 'stage';
+
+                    //parsedFile = haxe.Json.parse(sys.io.File.getContent('assets/data/stages/$curStage.json'));
+                    //trace('Loading stage file: $curStage as assets/data/stages/$curStage.json');
+                    currentSpriteLoader = parsedFile.sprites;
+
+					if (Paths.doesTextAssetExist(requestedStage)){
+
+						parsedFile = Json.parse(Paths.file(requestedStage));
+						trace('Loaded stafe file for $curStage from: $requestedStage');
+
+					}
+
+				stageSpriteCollection = new FlxTypedGroup<FlxSprite>();
+				add (stageSpriteCollection);
+
+						for (i in currentSpriteLoader){ // for sprites in either front or back. Removed some null checks. Screw it, we ball.
+									if (i.type == "bgSprite"){
+													levelSprite = new FlxSprite(i.x, i.y); // For variables x and y in the json. Ints, all real numbers.
+
+													if (parsedFile.directory != null)
+														levelSprite.loadGraphic(parsedFile.directory + '/' + i.graphic); //directory and graphic.
+															// This assumes that the graphics are already in a subfolder of the shared/images/stages folder.
+															// Don't end it in / this time.
+													else
+														levelSprite.loadGraphic(Paths.image(i.graphic)); //graphic
+
+													levelSprite.flipX = i.flipX; //flipX || bool: true/false
+													levelSprite.flipY = i.flipY; //flipY
+
+													if (i.scale != null){levelSprite.scale.x = i.scale[0]; levelSprite.scale.y = i.scale[1];} // scale || array of floats: [float, float]
+													if (i.antialiasing != null) levelSprite.antialiasing = i.antialiasing; //antialiasing || bool: true/false
+
+												// Optional Features Here
+													if (i.sparrow == true){     // sparrow || bool: true/false
+														if (parsedFile.directory != null)
+															levelSprite.frames = Paths.getSparrowAtlas(i.graphic); // value for a seperate XML file has been removed, kinda unnessesary.
+														else
+															levelSprite.frames = Paths.getSparrowAtlas(parsedFile.directory + '/' + i.graphic); // I forgot to accomodate for subfolders.
+
+														if (i.animations != null){ // animations || dynamic array, has a null check.
+																var spriteAnims:Array<Dynamic> = i.animations;
+																for (craftedAnimConfigs in spriteAnims){
+																	levelSprite.animation.addByPrefix(craftedAnimConfigs[0], craftedAnimConfigs[1], craftedAnimConfigs[2]);
+																}
+																if (i.startAnim != null){levelSprite.animation.play(i.startAnim);}
+														}else{
+																if (i.startAnim != null){trace("You're attempting to make sprite [" + i + "] (Named: " + i.name + ") play an animation despite it lacking any! Please check your configuration!");}
+														}
+													} // sparrow ends here
+											stageSpriteCollection.add(levelSprite);
+								}else if (i.type == "bf"){
+										add(boyfriend);
+								}else if (i.type == "gf"){
+										add(gf);
+								}else if (i.type == "dad"){
+										add(dad);
+								}
+					}
+					//add (stageSpriteCollection);
+		}
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
@@ -565,6 +650,8 @@ class PlayState extends MusicBeatState
 
 		iconP2 = new HealthIcon(SONG.player2, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
+
+		trace('Stage type: $stageType'); // test
 
 		healthBar.createFilledBar(dominantColor(iconP2), dominantColor(iconP1)); //0xFFFF0000, 0xFF66FF33
 		// healthBar

@@ -128,7 +128,7 @@ class MainMenuState extends MusicBeatState
 		versionInfo.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		versionInfo.scrollFactor.set();
 		add(versionInfo);
-		versionInfo.text = "Friday Night Funkin' - v0.2.7 (with future changes backported)\nTroll Engine - v1.1.4\nFinding Life - v0.1";
+		versionInfo.text = "Friday Night Funkin' - v0.2.7 (Somewhat)\nTroll Engine - v1.1.4 || Finding Life - v0.1 (Prerelease)";
 
 		// NG.core.calls.event.logEvent('swag').send();
 
