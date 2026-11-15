@@ -181,7 +181,7 @@ class ChartingState extends MusicBeatState
 	function addSongUI():Void
 	{
 		var songLabel = new FlxText(10, 10, 0, "Name");
-		songLabel.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		songLabel.scrollFactor.set();
 
@@ -228,7 +228,7 @@ class ChartingState extends MusicBeatState
 
 
 		var player1Label = new FlxText(10, 100, 0, "Player");
-		player1Label.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		player1Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		player1Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		player1Label.scrollFactor.set();
 		//add(player1Label);
@@ -243,7 +243,7 @@ class ChartingState extends MusicBeatState
 
 
 		var player2Label = new FlxText(140, player1Label.y, 0, "Opponent");
-		player2Label.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		player2Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		player2Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		player2Label.scrollFactor.set();
 		//add(player2Label);
@@ -257,7 +257,7 @@ class ChartingState extends MusicBeatState
 
 
 		var gfLabel = new FlxText(player1DropDown.x, 200, 0, "DJ");
-		gfLabel.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		gfLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		gfLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		gfLabel.scrollFactor.set();
 		//add(player2Label);
@@ -272,7 +272,7 @@ class ChartingState extends MusicBeatState
 
 
 		var stageLabel = new FlxText(player2DropDown.x, gfLabel.y, 0, "Stage");
-		stageLabel.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		stageLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		stageLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		stageLabel.scrollFactor.set();
 		//add(player2Label);
@@ -287,7 +287,7 @@ class ChartingState extends MusicBeatState
 			stageDropDown.selectedLabel = _song.stage;
 
 		var bpmLabel = new FlxText(10, 240, 0, "BPM");
-		bpmLabel.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		bpmLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		bpmLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		bpmLabel.scrollFactor.set();
 
@@ -296,7 +296,7 @@ class ChartingState extends MusicBeatState
 		stepperBPM.name = 'song_bpm';
 
 		var speedLabel = new FlxText(10, 280, 0, "Speed");
-		speedLabel.setFormat(Paths.font("pixel.ttf"), 16, FlxColor.WHITE, RIGHT);
+		speedLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
 		speedLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 		speedLabel.scrollFactor.set();
 

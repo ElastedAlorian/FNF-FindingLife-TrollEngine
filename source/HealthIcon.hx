@@ -2,6 +2,7 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+using StringTools; // Thank you, Haxe Discord. https://canary.discord.com/channels/162395145352904705/162395145352904705/1571241776767828068
 
 class HealthIcon extends FlxSprite
 {
@@ -9,11 +10,14 @@ class HealthIcon extends FlxSprite
 	 * Used for FreeplayState! If you use it elsewhere, prob gonna annoying
 	 */
 	public var sprTracker:FlxSprite;
-	var modifier:String;
+	//var modifier:String;
+	public var onetwothreefour:String = Paths.image("icons/icon-face");
+	public var isPixel:Bool = false;
+
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
-		switch(PlayState.curStage){
+		/*switch(PlayState.curStage){
 			case 'school' | 'school-evil':
 				modifier = "-pixel";
 			case 'mall' | 'mallEvil':
@@ -22,8 +26,8 @@ class HealthIcon extends FlxSprite
 				modifier = "-car";
 			default:
 				modifier = "";
-		}
-		#if charselection
+		}*/
+		/*#if charselection
 		if(isPlayer && FlxG.save.data.curcharacter != null){
 			if(FlxG.save.data.curcharacter == "BOYFRIEND"){
 				loadGraphic(Paths.image("icons/icon-bf"+modifier), true, 150, 150);
@@ -31,9 +35,23 @@ class HealthIcon extends FlxSprite
 			else loadGraphic(Paths.image("icons/icon-"+FlxG.save.data.curcharacter+modifier), true, 150, 150);
 		}
 		else loadGraphic(Paths.image("icons/icon-"+char), true, 150, 150);
-		#else
-		loadGraphic(Paths.image("icons/icon-"+char), true, 150, 150);
-		#end
+		#else*/
+		//loadGraphic(Paths.image("icons/icon-"+char), true, 150, 150);
+
+		//Taken from below.
+		if ( onetwothreefour.contains("pixel") | onetwothreefour.contains("senpai") | onetwothreefour.contains("spirit") ){
+		//if (char.indexOf("pixel" | "senpai" | "spirit") = null){
+	// isPixel ? PIXEL_ICON_SIZE : HEALTH_ICON_SIZE, isPixel ? PIXEL_ICON_SIZE : HEALTH_ICON_SIZE);
+				isPixel = true;
+		}
+		onetwothreefour = Paths.image("icons/icon-"+char);
+		loadGraphic(onetwothreefour, true, isPixel ? 32 : 150, isPixel ? 32 : 150);
+		antialiasing != isPixel;
+		if (isPixel == true){
+			scale.x = 6;
+			scale.y = 6;
+		}
+		//#end
 		antialiasing = true;
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		/*
@@ -62,7 +80,21 @@ class HealthIcon extends FlxSprite
 		scrollFactor.set();
 	}
 	public function changeIcon(char:String, isPlayer:Bool = false){
-		loadGraphic(Paths.image("icons/icon-"+char), true, 150, 150);
+
+	var isPixel:Bool = false;
+		if ( onetwothreefour.contains("pixel") | onetwothreefour.contains("senpai") | onetwothreefour.contains("spirit") ){
+		//if (char.indexOf("pixel" | "senpai" | "spirit") = null){
+	// isPixel ? PIXEL_ICON_SIZE : HEALTH_ICON_SIZE, isPixel ? PIXEL_ICON_SIZE : HEALTH_ICON_SIZE);
+				isPixel = true;
+		}else{
+				isPixel = false;
+		}
+		loadGraphic(onetwothreefour, true, isPixel ? 32 : 150, isPixel ? 32 : 150);
+		antialiasing != isPixel;
+		if (isPixel == true){
+			scale.x = 6;
+			scale.y = 6;
+		}
 		animation.add(char, [0, 1], 0, false, isPlayer);
 		animation.play(char);
 	}
