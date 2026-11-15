@@ -118,7 +118,7 @@ class Stage extends MusicBeatState
 						toAdd.push(phillyTrain);
 					}
 
-					trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes', 'shared'));
+					trainSound = new FlxSound().load(Paths.sound('train_passes', 'shared'));
 					FlxG.sound.list.add(trainSound);
 
 					// var cityLights:FlxSprite = new FlxSprite().loadGraphic(AssetPaths.win0.png);

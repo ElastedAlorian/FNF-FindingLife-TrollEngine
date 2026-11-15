@@ -81,8 +81,12 @@ class ChartingState extends MusicBeatState
 	var leftIcon:HealthIcon;
 	var rightIcon:HealthIcon;
 
+	public var labelFont:String;
+
 	override function create()
 	{
+		labelFont = Paths.font("pixel.otf");
+
 		curSection = 0;
 		//curSection = lastSection;
 
@@ -178,14 +182,14 @@ class ChartingState extends MusicBeatState
 		super.create();
 	}
 
-	function addSongUI():Void
+	function addSongUI():Void // Song UI
 	{
 
 			//FlxText and labels seem to be best when 25 difference in Y position.
 			// For steppers [number][ + ][ - ], the difference should be 30 so it looks a bit more right.
 
 				var songLabel = new FlxText(10, 10, 0, "Name");
-				songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				songLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				songLabel.scrollFactor.set();
 
@@ -232,7 +236,7 @@ class ChartingState extends MusicBeatState
 
 
 				var player1Label = new FlxText(10, 100, 0, "Player");
-				player1Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				player1Label.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				player1Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				player1Label.scrollFactor.set();
 				//add(player1Label);
@@ -247,7 +251,7 @@ class ChartingState extends MusicBeatState
 
 
 				var player2Label = new FlxText(140, player1Label.y, 0, "Opponent");
-				player2Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				player2Label.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				player2Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				player2Label.scrollFactor.set();
 				//add(player2Label);
@@ -261,7 +265,7 @@ class ChartingState extends MusicBeatState
 
 
 				var gfLabel = new FlxText(player1DropDown.x, 150, 0, "DJ");
-				gfLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				gfLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				gfLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				gfLabel.scrollFactor.set();
 				//add(player2Label);
@@ -275,7 +279,7 @@ class ChartingState extends MusicBeatState
 
 
 				var stageLabel = new FlxText(player2DropDown.x, gfLabel.y, 0, "Stage");
-				stageLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				stageLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				stageLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				stageLabel.scrollFactor.set();
 				//add(player2Label);
@@ -290,7 +294,7 @@ class ChartingState extends MusicBeatState
 					stageDropDown.selectedLabel = _song.stage;
 
 				var bpmLabel = new FlxText(10, 240, 0, "BPM");
-				bpmLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				bpmLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				bpmLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				bpmLabel.scrollFactor.set();
 
@@ -299,7 +303,7 @@ class ChartingState extends MusicBeatState
 				stepperBPM.name = 'song_bpm';
 
 				var speedLabel = new FlxText(10, 280, 0, "Speed");
-				speedLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				speedLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				speedLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				speedLabel.scrollFactor.set();
 
@@ -347,7 +351,7 @@ class ChartingState extends MusicBeatState
 	var stepperSectionBPM:FlxUINumericStepper;
 	var check_altAnim:FlxUICheckBox;
 
-	function addSectionUI():Void
+	function addSectionUI():Void // Section Tab
 	{
 		var tab_group_section = new FlxUI(null, UI_box);
 		tab_group_section.name = 'Section';
@@ -412,7 +416,7 @@ class ChartingState extends MusicBeatState
 		tab_group_note.name = 'Note';
 
 				var songLabel = new FlxText(10, 10, 0, "Note Length (Must be Applied)");
-				songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				songLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				songLabel.scrollFactor.set();
 
@@ -876,13 +880,13 @@ class ChartingState extends MusicBeatState
 	{
 		if (check_mustHitSection.checked)
 		{
-			leftIcon.animation.play('bf');
-			rightIcon.animation.play('dad');
+			//leftIcon.animation.play('bf');
+			//rightIcon.animation.play('dad');
 		}
 		else
 		{
-			leftIcon.animation.play('dad');
-			rightIcon.animation.play('bf');
+			//leftIcon.animation.play('dad');
+			//rightIcon.animation.play('bf');
 		}
 	}
 
