@@ -156,15 +156,15 @@ class ChartingState extends MusicBeatState
 		add(dummyArrow);
 
 		var tabs = [
-			{name: "Song", label: 'Song'},
+			{name: "Note", label: 'Note'},
 			{name: "Section", label: 'Section'},
-			{name: "Note", label: 'Note'}
+			{name: "Song", label: 'Song'}
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
 
 		UI_box.resize(300, 400);
-		UI_box.x = FlxG.width / 2;
+		UI_box.x = FlxG.width / 2 + 120;
 		UI_box.y = 20;
 		add(UI_box);
 
@@ -180,159 +180,165 @@ class ChartingState extends MusicBeatState
 
 	function addSongUI():Void
 	{
-		var songLabel = new FlxText(10, 10, 0, "Name");
-		songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		songLabel.scrollFactor.set();
 
-		var UI_songTitle = new FlxInputText(10, songLabel.y + 20, 70, _song.song, 8);
-		typingShit = UI_songTitle;
+			//FlxText and labels seem to be best when 25 difference in Y position.
+			// For steppers [number][ + ][ - ], the difference should be 30 so it looks a bit more right.
 
-		var check_voices = new FlxUICheckBox(10, UI_songTitle.y + 10, null, null, "Has voices?", 100);
-		check_voices.checked = _song.needsVoices;
-		// _song.needsVoices = check_voices.checked;
-		check_voices.callback = function()
-		{
-			_song.needsVoices = check_voices.checked;
-			trace('CHECKED!');
-		};
+				var songLabel = new FlxText(10, 10, 0, "Name");
+				songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				songLabel.scrollFactor.set();
 
-		var check_mute_inst = new FlxUICheckBox(10, check_voices.y + 25, null, null, "Mute Instrumental (in editor)", 100);
-		check_mute_inst.checked = false;
-		check_mute_inst.callback = function()
-		{
-			var vol:Float = 1;
+				var UI_songTitle = new FlxInputText(10, songLabel.y + 25, 70, _song.song, 8);
+				typingShit = UI_songTitle;
 
-			if (check_mute_inst.checked)
-				vol = 0;
+				var check_voices = new FlxUICheckBox(10, UI_songTitle.y + 50, null, null, "Has voices?", 100);
+				check_voices.checked = _song.needsVoices;
+				// _song.needsVoices = check_voices.checked;
+				check_voices.callback = function()
+				{
+					_song.needsVoices = check_voices.checked;
+					trace('CHECKED!');
+				};
 
-			FlxG.sound.music.volume = vol;
-		};
+				var check_mute_inst = new FlxUICheckBox(10, check_voices.y + 25, null, null, "Mute Instrumental (in editor)", 100);
+				check_mute_inst.checked = false;
+				check_mute_inst.callback = function()
+				{
+					var vol:Float = 1;
 
-		var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
-		{
-			saveLevel();
-		});
+					if (check_mute_inst.checked)
+						vol = 0;
 
-		var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Music", function()
-		{
-			loadSong(_song.song);
-		});
+					FlxG.sound.music.volume = vol;
+				};
 
-		var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload Chart", function()
-		{
-			loadJson('songs/' + _song.song.toLowerCase());
-		});
+				var saveButton:FlxButton = new FlxButton(110, 8, "Save", function()
+				{
+					saveLevel();
+				});
 
-		var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', loadAutosave);
+				var reloadSong:FlxButton = new FlxButton(saveButton.x + saveButton.width + 10, saveButton.y, "Reload Music", function()
+				{
+					loadSong(_song.song);
+				});
 
+				var reloadSongJson:FlxButton = new FlxButton(reloadSong.x, saveButton.y + 30, "Reload Chart", function()
+				{
+					loadJson('songs/' + _song.song.toLowerCase());
+				});
 
-		var player1Label = new FlxText(10, 100, 0, "Player");
-		player1Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		player1Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		player1Label.scrollFactor.set();
-		//add(player1Label);
-
-		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
-		var player1DropDown = new FlxUIDropDownMenu(10, 125, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
-		{
-			_song.player1 = characters[Std.parseInt(character)];
-			leftIcon.changeIcon(characters[Std.parseInt(character)]);
-		});
-			player1DropDown.selectedLabel = _song.player1;
+				var loadAutosaveBtn:FlxButton = new FlxButton(reloadSongJson.x, reloadSongJson.y + 30, 'Load Autosave', loadAutosave);
 
 
-		var player2Label = new FlxText(140, player1Label.y, 0, "Opponent");
-		player2Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		player2Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		player2Label.scrollFactor.set();
-		//add(player2Label);
+				var player1Label = new FlxText(10, 100, 0, "Player");
+				player1Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				player1Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				player1Label.scrollFactor.set();
+				//add(player1Label);
 
-		var player2DropDown = new FlxUIDropDownMenu(140, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
-		{
-			_song.player2 = characters[Std.parseInt(character)];
-			rightIcon.changeIcon(characters[Std.parseInt(character)]);
-		});
-			player2DropDown.selectedLabel = _song.gf;
-
-
-		var gfLabel = new FlxText(player1DropDown.x, 200, 0, "DJ");
-		gfLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		gfLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		gfLabel.scrollFactor.set();
-		//add(player2Label);
+				var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
+				var player1DropDown = new FlxUIDropDownMenu(10, 125, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+				{
+					_song.player1 = characters[Std.parseInt(character)];
+					leftIcon.changeIcon(characters[Std.parseInt(character)]);
+				});
+					player1DropDown.selectedLabel = _song.player1;
 
 
-		var gfDropDown = new FlxUIDropDownMenu(10, gfLabel.y + 50, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
-		{
-			_song.gf = characters[Std.parseInt(character)];
-			//rightIcon.changeIcon(characters[Std.parseInt(character)]);
-		});
-			gfDropDown.selectedLabel = _song.gf;
+				var player2Label = new FlxText(140, player1Label.y, 0, "Opponent");
+				player2Label.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				player2Label.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				player2Label.scrollFactor.set();
+				//add(player2Label);
+
+				var player2DropDown = new FlxUIDropDownMenu(140, player1DropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+				{
+					_song.player2 = characters[Std.parseInt(character)];
+					rightIcon.changeIcon(characters[Std.parseInt(character)]);
+				});
+					player2DropDown.selectedLabel = _song.gf;
 
 
-		var stageLabel = new FlxText(player2DropDown.x, gfLabel.y, 0, "Stage");
-		stageLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		stageLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		stageLabel.scrollFactor.set();
-		//add(player2Label);
-		var stageListGrab:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
-		var stageDropDown = new FlxUIDropDownMenu(player2DropDown.x, gfDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(stageListGrab, true), function(stage:String)
-		{
-			//PlayState.stageType = "hardcoded";
-			_song.stage = stageListGrab[Std.parseInt(stage)];
-			trace(_song.stage);
-			//leftIcon.changeIcon(stageListGrab[Std.parseInt(character)]);
-		});
-			stageDropDown.selectedLabel = _song.stage;
+				var gfLabel = new FlxText(player1DropDown.x, 150, 0, "DJ");
+				gfLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				gfLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				gfLabel.scrollFactor.set();
+				//add(player2Label);
 
-		var bpmLabel = new FlxText(10, 240, 0, "BPM");
-		bpmLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		bpmLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		bpmLabel.scrollFactor.set();
+				var gfDropDown = new FlxUIDropDownMenu(10, gfLabel.y + 25, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
+				{
+					_song.gf = characters[Std.parseInt(character)];
+					//rightIcon.changeIcon(characters[Std.parseInt(character)]);
+				});
+					gfDropDown.selectedLabel = _song.gf;
 
-		var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, 265, 1, 1, 1, 999, 0);
-		stepperBPM.value = Conductor.bpm;
-		stepperBPM.name = 'song_bpm';
 
-		var speedLabel = new FlxText(10, 280, 0, "Speed");
-		speedLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
-		speedLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
-		speedLabel.scrollFactor.set();
+				var stageLabel = new FlxText(player2DropDown.x, gfLabel.y, 0, "Stage");
+				stageLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				stageLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				stageLabel.scrollFactor.set();
+				//add(player2Label);
+				var stageListGrab:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
+				var stageDropDown = new FlxUIDropDownMenu(player2DropDown.x, gfDropDown.y, FlxUIDropDownMenu.makeStrIdLabelArray(stageListGrab, true), function(stage:String)
+				{
+					//PlayState.stageType = "hardcoded";
+					_song.stage = stageListGrab[Std.parseInt(stage)];
+					trace(_song.stage);
+					//leftIcon.changeIcon(stageListGrab[Std.parseInt(character)]);
+				});
+					stageDropDown.selectedLabel = _song.stage;
 
-		var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, 320, 0.1, 1, 0.1, 10, 1);
-		stepperSpeed.value = _song.speed;
-		stepperSpeed.name = 'song_speed';
-		
-		var tab_group_song = new FlxUI(null, UI_box);
-		tab_group_song.name = "Song";
-		tab_group_song.add(UI_songTitle);
+				var bpmLabel = new FlxText(10, 240, 0, "BPM");
+				bpmLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				bpmLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				bpmLabel.scrollFactor.set();
 
-		tab_group_song.add(check_voices);
-		tab_group_song.add(check_mute_inst);
-		tab_group_song.add(saveButton);
-		tab_group_song.add(reloadSong);
-		tab_group_song.add(reloadSongJson);
-		tab_group_song.add(loadAutosaveBtn);
-		tab_group_song.add(stepperBPM);
-		tab_group_song.add(stepperSpeed);
-		tab_group_song.add(player1DropDown);
-		tab_group_song.add(player2DropDown);
-		tab_group_song.add(gfDropDown);
-		tab_group_song.add(stageDropDown);
-				tab_group_song.add(bpmLabel);
-		tab_group_song.add(speedLabel);
+				var stepperBPM:FlxUINumericStepper = new FlxUINumericStepper(10, bpmLabel.y + 30, 1, 1, 1, 999, 0);
+				stepperBPM.value = Conductor.bpm;
+				stepperBPM.name = 'song_bpm';
 
-		tab_group_song.add(songLabel);
+				var speedLabel = new FlxText(10, 280, 0, "Speed");
+				speedLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				speedLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				speedLabel.scrollFactor.set();
+
+				var stepperSpeed:FlxUINumericStepper = new FlxUINumericStepper(10, speedLabel .y + 30, 0.1, 1, 0.1, 10, 1);
+				stepperSpeed.value = _song.speed;
+				stepperSpeed.name = 'song_speed';
+
+				var tab_group_song = new FlxUI(null, UI_box);
+				tab_group_song.name = "Song";
+				tab_group_song.add(UI_songTitle);
+
+				tab_group_song.add(songLabel);
 				tab_group_song.add(player1Label);
-		tab_group_song.add(player2Label);
-		tab_group_song.add(gfLabel);
+				tab_group_song.add(player2Label);
+				tab_group_song.add(stageLabel);
+				tab_group_song.add(gfLabel);
+
+				tab_group_song.add(check_voices);
+				tab_group_song.add(check_mute_inst);
+				tab_group_song.add(saveButton);
+				tab_group_song.add(reloadSong);
+				tab_group_song.add(reloadSongJson);
+				tab_group_song.add(loadAutosaveBtn);
+				tab_group_song.add(stepperBPM);
+				tab_group_song.add(stepperSpeed);
+				tab_group_song.add(player1DropDown);
+				tab_group_song.add(player2DropDown);
+				tab_group_song.add(gfDropDown);
+				tab_group_song.add(stageDropDown);
+				tab_group_song.add(bpmLabel);
+				tab_group_song.add(speedLabel);
 
 
-		UI_box.addGroup(tab_group_song);
-		UI_box.scrollFactor.set();
 
-		FlxG.camera.follow(strumLine);
+
+				UI_box.addGroup(tab_group_song);
+				UI_box.scrollFactor.set();
+
+				FlxG.camera.follow(strumLine);
 	}
 
 	var stepperLength:FlxUINumericStepper;
@@ -400,16 +406,21 @@ class ChartingState extends MusicBeatState
 
 	var stepperSusLength:FlxUINumericStepper;
 
-	function addNoteUI():Void
+	function addNoteUI():Void // "Note" tab
 	{
 		var tab_group_note = new FlxUI(null, UI_box);
 		tab_group_note.name = 'Note';
 
-		stepperSusLength = new FlxUINumericStepper(10, 10, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16);
+				var songLabel = new FlxText(10, 10, 0, "Note Length (Must be Applied)");
+				songLabel.setFormat(Paths.font("pixel.otf"), 16, FlxColor.WHITE, RIGHT);
+				songLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
+				songLabel.scrollFactor.set();
+
+		stepperSusLength = new FlxUINumericStepper(10, 35, Conductor.stepCrochet / 2, 0, 0, Conductor.stepCrochet * 16);
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
-		var applyLength:FlxButton = new FlxButton(100, 10, 'Apply');
+		var applyLength:FlxButton = new FlxButton(10, 60, 'Apply');
 
 		tab_group_note.add(stepperSusLength);
 		tab_group_note.add(applyLength);
