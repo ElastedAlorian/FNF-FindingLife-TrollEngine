@@ -2,7 +2,7 @@ import lime.app.Application;
 //import polymod.Polymod.PolymodError;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.system.debug.log.FlxLogStyle;
+import flixel.system.debug.log.LogStyle; // I am not making this to something not deprecated since this is an annoying file.
 import flixel.system.debug.watch.Tracker.TrackerProfile;
 import flixel.util.FlxStringUtil;
 import haxe.Log;
@@ -22,10 +22,10 @@ using StringTools;
  */
 class Debug
 {
-	static final LOG_STYLE_ERROR:FlxLogStyle = new FlxLogStyle('[ERROR] ', 'FF8888', 12, true, false, false, 'assets/sounds/CS_Locked', true);
-	static final LOG_STYLE_WARN:FlxLogStyle = new FlxLogStyle('[WARN ] ', 'D9F85C', 12, true, false, false, 'assets/sounds/cancelMenu', true);
-	static final LOG_STYLE_INFO:FlxLogStyle = new FlxLogStyle('[INFO ] ', '5CF878', 12, false);
-	static final LOG_STYLE_TRACE:FlxLogStyle = new FlxLogStyle('[TRACE] ', '5CF878', 12, false);
+	static final LOG_STYLE_ERROR:LogStyle = new LogStyle('[ERROR] ', 'FF8888', 12, true, false, false, 'assets/sounds/CS_Locked', true);
+	static final LOG_STYLE_WARN:LogStyle = new LogStyle('[WARN ] ', 'D9F85C', 12, true, false, false, 'assets/sounds/cancelMenu', true);
+	static final LOG_STYLE_INFO:LogStyle = new LogStyle('[INFO ] ', '5CF878', 12, false);
+	static final LOG_STYLE_TRACE:LogStyle = new LogStyle('[TRACE] ', '5CF878', 12, false);
 
 	static var logFileWriter:DebugLogWriter = null;
 
@@ -231,7 +231,7 @@ class Debug
 		logFileWriter.setLogLevel(FlxG.save.data.debugLogLevel);
 	}
 
-	static function writeToFlxGLog(data:Array<Dynamic>, logStyle:FlxLogStyle)
+	static function writeToFlxGLog(data:Array<Dynamic>, logStyle:LogStyle)
 	{
 		if (FlxG != null && FlxG.game != null && FlxG.log != null)
 		{
