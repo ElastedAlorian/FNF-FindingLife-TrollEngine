@@ -102,12 +102,11 @@ class ChartingState extends MusicBeatState
 
 		playerStrumDisplayer = new FlxSprite();
 		playerStrumDisplayer.makeGraphic(GRID_SIZE * 4, FlxG.height, 0xFF8fe08f);
-		add(playerStrumDisplayer);
+
 		playerStrumDisplayer.x = 320;
 
 		opponentStrumDisplayer = new FlxSprite();
 		opponentStrumDisplayer.makeGraphic(GRID_SIZE * 4, FlxG.height, 0xFFe09090);
-		add(opponentStrumDisplayer);
 		opponentStrumDisplayer.x = 480;
 
 		playerStrumDisplayer.blend = opponentStrumDisplayer.blend = MULTIPLY;
@@ -115,6 +114,8 @@ class ChartingState extends MusicBeatState
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
 
+		add(playerStrumDisplayer);
+		add(opponentStrumDisplayer);
 		add(leftIcon);
 		add(rightIcon);
 

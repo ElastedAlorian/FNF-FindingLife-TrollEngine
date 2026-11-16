@@ -144,6 +144,11 @@ class Paths
 		return getPath('data/$key.json', TEXT, library);
 	}
 
+	inline static public function gameStage(key:String, ?library:String)
+	{
+		return getPath('data/stages/$key.json', TEXT, library); // BECAUSE THE STUPID OTHER FUNCTIONS WERE STUPID TO ME;
+	}
+
 	static public function sound(key:String, ?library:String)
 	{
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
@@ -231,6 +236,12 @@ class Paths
 	inline static public function doesTextAssetExist(path:String)
 	{
 		return OpenFlAssets.exists(path, AssetType.TEXT);
+	}
+
+	inline static public function doesStageAssetExist(path:String)
+	{
+		trace(OpenFlAssets.exists('stages/$path.json', AssetType.TEXT));
+		return OpenFlAssets.exists('stages/$path.json', AssetType.TEXT);
 	}
 
 	inline static public function image(key:String, ?library:String)

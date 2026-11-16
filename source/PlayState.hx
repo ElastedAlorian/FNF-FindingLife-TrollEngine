@@ -480,17 +480,48 @@ class PlayState extends MusicBeatState
 		//add(dad);
 		//add(boyfriend);
 
-		var requestedStage:String = 'stages/${SONG.stage}'; // So I don't have to type much.
+		//var requestedStage:String = 'stages/${SONG.stage}'; // So I don't have to type much.
+		var requestedStage:String = 'data/stages/${SONG.stage}.json';
 		trace(requestedStage);
 
-		if (Paths.doesTextAssetExist('assets/data/$requestedStage.json')){
+		/*if (Paths.doesTextAssetExist('assets/data/$requestedStage.json')){
 						trace('Requested stage exists! Asset: $requestedStage');
 						stageType = "json";
 		}else{
 						trace('Requested stage does not exist. Loading hardcoded stage. Needed file: $requestedStage');
 						stageType = "hardcoded";
+		}*/
+		if (Paths.doesTextAssetExist(requestedStage)){
+				parsedFile = Json.parse(Paths.file(requestedStage));
+				trace('Loaded stafe file for $curStage from: $requestedStage');
+				stageType = "json";
+		}else{
+				stageType = "hardcoded";
 		}
 		trace(SONG.stage);
+
+
+		// TESTING
+		if (Paths.doesStageAssetExist(SONG.stage)){
+			trace('Does exist' + Paths.gameStage(SONG.stage));
+		}else{
+			trace('Does not exist: ' + Paths.gameStage(SONG.stage));
+		}
+
+		// Example from Kade Engine:
+			// if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue')))
+
+		if (Paths.doesTextAssetExist(Paths.txt('assets/data/stages/$[SONG.stage].json'))){
+			trace('1 - Does exist' + Paths.gameStage(SONG.stage));
+		}else{
+			trace('2 - Does not exist: ' + Paths.gameStage(SONG.stage));
+		}
+
+		if ((Paths.loadJSON('stages/' + SONG.stage )) != null){
+			trace("3 - Load isn't null!");
+		}else{
+			trace("4 - Load is null)");
+		}
 
 
 		// Kade Engine Method
@@ -1849,7 +1880,7 @@ class PlayState extends MusicBeatState
 				FlxTransitionableState.skipNextTransOut = true;
 				prevCamFollow = camFollow;
 
-				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
+				PlayState.SONG = Song.loadFromJson('songs/' + PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
 
 				LoadingState.loadAndSwitchState(new PlayState());
