@@ -499,6 +499,7 @@ class PlayState extends MusicBeatState
 		}
 		trace(SONG.stage);
 
+				FlxG.camera.zoom = defaultCamZoom; // so I don't have to call it somewhere else. moved upwards
 		// Kade Engine Method
 		if (stageType == null){ // Only if the stage isn't specified.
 				SONG.stage = curStage = "stage";
@@ -608,6 +609,7 @@ class PlayState extends MusicBeatState
 							}*/
 					}
 
+					FlxG.camera.zoom = parsedFile.camZoom;
 		}
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
@@ -644,7 +646,6 @@ class PlayState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, LOCKON, 0.04);
 		// FlxG.camera.setScrollBounds(0, FlxG.width, 0, FlxG.height);
-		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
