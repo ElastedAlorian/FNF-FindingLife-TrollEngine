@@ -151,7 +151,9 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					close();
 				case "Restart Song":
-					FlxG.resetState();
+					Conductor.songPosition = 0;
+					PlayState.instance.clear(); // Kade Engine method. Thank you Kade Engine.
+					//FlxG.resetState();
 				case "Charting Menu":
 					FlxG.switchState(()->new ChartingState());
 				case "Control Scheme":
@@ -178,8 +180,12 @@ class PauseSubState extends MusicBeatSubstate
 					skipped = true;
 					FlxG.resetState();
 					//FlxG.resetState();
-				case "Exit to menu":
+				case "Exit to menu":{
+					//PlayState.FlxG.cameras.add(camHUD, false); //Should remove the camera. Wait, I don't need this.
+					//FlxG.cameras.remove(PlayState.camHUD);
 					FlxG.switchState(PlayState.isStoryMode?()->new MainMenuState():()->new FreeplayState());
+
+				}
 			}
 		}
 

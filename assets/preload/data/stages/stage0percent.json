@@ -40,13 +40,16 @@
             "scrollFactor":[1.3, 1.3]
         },
        {
-            "type":"gf"
+            "type":"gf",
+            "offsets": [ 400, 130 ]
         },
           {
-            "type":"dad"
+            "type":"dad",
+            "offsets": [ 100, 100 ]
         },
         {
-            "type":"bf"
+            "type":"bf",
+            "offsets": [ 770, 450 ]
         }
     ],
 

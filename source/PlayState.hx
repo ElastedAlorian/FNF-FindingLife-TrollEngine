@@ -108,8 +108,8 @@ class PlayState extends MusicBeatState
 
 	public static var iconP1:HealthIcon;
 	public static var iconP2:HealthIcon;
-	private var camGame:FlxCamera;
-		private var camHUD:FlxCamera;
+	public var camGame:FlxCamera;
+	public var camHUD:FlxCamera;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
 
@@ -172,6 +172,9 @@ class PlayState extends MusicBeatState
 
 		var characterOffsetHelper:Array<Dynamic>;
 
+		public static var instance:PlayState = null; // Kade Engine
+
+
 
 	override public function create()
 	{
@@ -204,7 +207,11 @@ class PlayState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 		FlxG.cameras.add(camHUD, false);
-		add(camHUD);
+		if (FlxG.cameras.list.contains(camHUD) == false){
+			add(camHUD);
+		} // So the game doesn't crash on a song restart.
+
+
 
 		persistentUpdate = true;
 		persistentDraw = true;
@@ -486,15 +493,17 @@ class PlayState extends MusicBeatState
 		var requestedStage:String = 'stages/' + SONG.stage;
 		trace(requestedStage);
 
-		if ((Paths.loadJSON(requestedStage)) != null){ // Checks for the stage JSON.
+		if (requestedStage != null){ // Checks to see if the song's stage isn't null.
+			if (Paths.json(requestedStage) != null){ //Checks for the stage JSON.
 				parsedFile = Paths.loadJSON(requestedStage);
 				trace('Loaded stafe file for $curStage from: $requestedStage');
 				trace('Requested stage exists! Asset: $requestedStage');
 				stageType = "json";
 				trace("3 - Load isn't null!");
+			}
 		}else{
 				stageType = "hardcoded";
-				trace('Requested stage does not exist. Loading hardcoded stage. Needed file: $requestedStage');
+				trace('Requested stage file does not exist. Loading hardcoded stage. Needed file: $requestedStage');
 				trace("4 - Load is null.");
 		}
 		trace(SONG.stage);
@@ -584,8 +593,10 @@ class PlayState extends MusicBeatState
 											stageSpriteCollection.add(levelSprite);
 								}else if (i.type == "bf"){
 										add(boyfriend);
+										if (i.offsets != null){boyfriend.x += i.offsets[0]; boyfriend.y += i.offsets[1];}
 								}else if (i.type == "gf"){
 										add(gf);
+										gf.scrollFactor.set(0.95, 0.95);
 								}else if (i.type == "dad"){
 										add(dad);
 								}
@@ -607,6 +618,12 @@ class PlayState extends MusicBeatState
 									dad.y += i.dad[1];
 								}
 							}*/
+									/*boyfriend.x += characterOffsetHelper.bf[0];
+									boyfriend.y += characterOffsetHelper.bf[1];
+									gf.x += characterOffsetHelper.gf[0];
+									gf.y += characterOffsetHelper.gf[1];
+									dad.x += characterOffsetHelper.dad[0];
+									dad.y += characterOffsetHelper.dad[1];*/
 					}
 
 					FlxG.camera.zoom = parsedFile.camZoom;
