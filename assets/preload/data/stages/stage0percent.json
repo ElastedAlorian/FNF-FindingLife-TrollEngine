@@ -14,7 +14,7 @@
         {
            "type":"bgSprite",
            "title":"bg",
-            "graphic":"stageback.png",
+            "graphic":"stageback",
             "x":-600,
             "y":-200,
             "antialiasing":true,
@@ -23,7 +23,7 @@
          {
             "type":"bgSprite",
             "title":"stageFront",
-            "graphic":"stagefront.png",
+            "graphic":"stagefront",
             "x":-650,
             "y":-600,
             "scale":[1.1, 1],
@@ -33,7 +33,7 @@
          {
            "type":"bgSprite",
             "title":"stageCurtains",
-            "graphic":"stagecurtains.png",
+            "graphic":"stagecurtains",
             "x":-500,
             "y":-300,
             "antialiasing":true,

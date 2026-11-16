@@ -536,21 +536,23 @@ class PlayState extends MusicBeatState
 					}
 		}else if (stageType == "json"){
 
-				parsedFile = haxe.Json.parse("{}"); //jsonloading is broken :(
+				//parsedFile = haxe.Json.parse("{}"); //jsonloading was  broken :(
+				currentSpriteLoader = parsedFile.sprites; // I forgot to include this line, and because of it, nothing loaded in-game.
 
 				stageSpriteCollection = new FlxTypedGroup<FlxSprite>();
-				add (stageSpriteCollection);
+				//add (stageSpriteCollection);
 					if (currentSpriteLoader != null && currentSpriteLoader.length > 0){ // So empty JSONs don't crash the game.
 						for (i in currentSpriteLoader){ // for sprites in either front or back. Removed some null checks. Screw it, we ball.
 									if (i.type == "bgSprite"){
 													levelSprite = new FlxSprite(i.x, i.y); // For variables x and y in the json. Ints, all real numbers.
 
 													if (parsedFile.directory != null)
-														levelSprite.loadGraphic(parsedFile.directory + '/' + i.graphic); //directory and graphic.
+														levelSprite.loadGraphic(Paths.loadImage(parsedFile.directory + '/' + i.graphic)); //directory and graphic.
 															// This assumes that the graphics are already in a subfolder of the shared/images/stages folder.
 															// Don't end it in / this time.
+															// Due to how Paths.hx works, the files can't end with .png when referenced in the stage's json files.
 													else
-														levelSprite.loadGraphic(Paths.image(i.graphic)); //graphic
+														levelSprite.loadGraphic(Paths.loadImage(i.graphic)); //graphic
 
 													levelSprite.flipX = i.flipX; //flipX || bool: true/false
 													levelSprite.flipY = i.flipY; //flipY
@@ -585,7 +587,7 @@ class PlayState extends MusicBeatState
 								}
 						}
 					}
-					//add (stageSpriteCollection);
+				add (stageSpriteCollection);
 		}
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
