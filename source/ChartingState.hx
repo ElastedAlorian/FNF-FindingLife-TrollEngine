@@ -82,6 +82,8 @@ class ChartingState extends MusicBeatState
 	var rightIcon:HealthIcon;
 
 	public var labelFont:String;
+	var playerStrumDisplayer:FlxSprite;
+	var opponentStrumDisplayer:FlxSprite;
 
 	override function create()
 	{
@@ -98,6 +100,18 @@ class ChartingState extends MusicBeatState
 		leftIcon.scrollFactor.set(1, 1);
 		rightIcon.scrollFactor.set(1, 1);
 
+		playerStrumDisplayer = new FlxSprite();
+		playerStrumDisplayer.makeGraphic(GRID_SIZE * 4, FlxG.height, 0xFF8fe08f);
+		add(playerStrumDisplayer);
+		playerStrumDisplayer.x = 320;
+
+		opponentStrumDisplayer = new FlxSprite();
+		opponentStrumDisplayer.makeGraphic(GRID_SIZE * 4, FlxG.height, 0xFFe09090);
+		add(opponentStrumDisplayer);
+		opponentStrumDisplayer.x = 480;
+
+		playerStrumDisplayer.blend = opponentStrumDisplayer.blend = MULTIPLY;
+
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
 
@@ -109,6 +123,7 @@ class ChartingState extends MusicBeatState
 
 		var gridBlackLine:FlxSprite = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
 		add(gridBlackLine);
+
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
@@ -149,7 +164,7 @@ class ChartingState extends MusicBeatState
 		Conductor.changeBPM(_song.bpm);
 		Conductor.mapBPMChanges(_song);
 
-		bpmTxt = new FlxText(1000, 50, 0, "", 16);
+		bpmTxt = new FlxText(1000, 550, 0, "", 16);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
 
@@ -196,7 +211,7 @@ class ChartingState extends MusicBeatState
 				var UI_songTitle = new FlxInputText(10, songLabel.y + 25, 70, _song.song, 8);
 				typingShit = UI_songTitle;
 
-				var check_voices = new FlxUICheckBox(10, UI_songTitle.y + 50, null, null, "Has voices?", 100);
+				var check_voices = new FlxUICheckBox(10, UI_songTitle.y + 50 - 35, null, null, "Has voices?", 100);
 				check_voices.checked = _song.needsVoices;
 				// _song.needsVoices = check_voices.checked;
 				check_voices.callback = function()
@@ -302,7 +317,7 @@ class ChartingState extends MusicBeatState
 				stepperBPM.value = Conductor.bpm;
 				stepperBPM.name = 'song_bpm';
 
-				var speedLabel = new FlxText(10, 280, 0, "Speed");
+				var speedLabel = new FlxText(10, 300, 0, "Speed");
 				speedLabel.setFormat(labelFont, 16, FlxColor.WHITE, RIGHT);
 				speedLabel.setBorderStyle(SHADOW, FlxColor.BLACK, 1);
 				speedLabel.scrollFactor.set();
@@ -577,6 +592,9 @@ class ChartingState extends MusicBeatState
 			}
 
 			changeSection(curSection + 1, false);
+		}else if (curBeat % 1 == 4 && curStep >= 16 * (curSection - 1)){ // I highly doubt this will work.
+
+			changeSection(curSection - 1, false);
 		}
 
 		FlxG.watch.addQuick('daBeat', curBeat);

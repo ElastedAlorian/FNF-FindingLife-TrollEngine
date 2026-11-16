@@ -30,6 +30,7 @@ class HealthIcon extends FlxSprite
 			loadGraphic(onetwothreefour, true, isPixel ? 32 : 150, isPixel ? 32 : 150);
 				antialiasing != isPixel; // If it's a pixel icon, then it is the inverse of that, so no anti-aliasing.
 				if (isPixel == true){ scale.x = 6; scale.y = 6; } // Move scaling to one line to take up less space.
+				updateHitbox();
 
 		//antialiasing = true;
 		animation.add(char, [0, 1], 0, false, isPlayer);

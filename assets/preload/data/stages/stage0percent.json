@@ -44,12 +44,7 @@
         },
           {
             "type":"dad"
-        },
-        {
-             "type":"extrachars",
-            "extrachars":true,
-            "note":"I don't have any use for extra characters inside the engine, so do as you will with this I guess."
-        },
+        }
         {
             "type":"bf"
         }

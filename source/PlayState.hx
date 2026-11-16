@@ -168,7 +168,7 @@ class PlayState extends MusicBeatState
 
 		// From current subimplementation.
 				public 	var stageCheck:String = 'stage'; // Kade Engine
-				public 	var stageType:String = 'hardcoded'; // Custom method, trying to differenciate the old and new formats.
+				public 	var stageType:String; // Custom method, trying to differenciate the old and new formats.
 
 
 	override public function create()
@@ -302,6 +302,8 @@ class PlayState extends MusicBeatState
 		DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconRPC);
 		#end
 
+		curStage = SONG.stage; // I feel I may need to put this here.
+
 		// Some variable stuff. Taken from Kade Engine. Mainly so its stage code can work. Don't ask.
 				GameplayCustomizeState.freeplayBf = SONG.player1;
 				GameplayCustomizeState.freeplayDad = SONG.player2;
@@ -315,7 +317,7 @@ class PlayState extends MusicBeatState
 		// Method borrowed from Kade Engine
 					// variables moved upwards
 							// If the stage isn't specified in the chart, we use the story week value.
-					if (SONG.stage == null) // Checks if the song lacks a stage in the JSON file.
+					/*if (SONG.stage == null) // Checks if the song lacks a stage in the JSON file.
 					{
 						switch (storyWeek)
 						{
@@ -360,7 +362,7 @@ class PlayState extends MusicBeatState
 							//else
 								//SONG.stage =
 						}
-					}
+					}*/ // I forgot I had this here.
 
 		var gfVersion:String = 'gf';
 
@@ -382,7 +384,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (curStage == 'limo')
-			gfVersion = 'gf-car';
+				gfVersion = 'gf-car';
 
 		gf = new Character(400, 130, gfVersion);
 		gf.scrollFactor.set(0.95, 0.95);
@@ -478,64 +480,63 @@ class PlayState extends MusicBeatState
 		//add(dad);
 		//add(boyfriend);
 
+		var requestedStage:String = 'stages/${SONG.stage}'; // So I don't have to type much.
+		trace(requestedStage);
+
+		if (Paths.doesTextAssetExist('assets/data/$requestedStage.json')){
+						trace('Requested stage exists! Asset: $requestedStage');
+						stageType = "json";
+		}else{
+						trace('Requested stage does not exist. Loading hardcoded stage. Needed file: $requestedStage');
+						stageType = "hardcoded";
+		}
+		trace(SONG.stage);
+
+
 		// Kade Engine Method
-		if (stageType == null){
-				SONG.stage = "stage";
+		if (stageType == null){ // Only if the stage isn't specified.
+				SONG.stage = curStage = "stage";
 				stageType = "hardcoded";
 		}if (stageType == "hardcoded"){
-			Stage = new Stage(SONG.stage);
+				Stage = new Stage(SONG.stage);
 
-				var positions = Stage.positions[Stage.curStage];
-				if (positions != null)
-				{
-					for (char => pos in positions)
-						for (person in [boyfriend, gf, dad])
-							if (person.curCharacter == char)
-								person.setPosition(pos[0], pos[1]);
-				}
-				for (i in Stage.toAdd)
-				{
-					add(i);
-				}
-					for (index => array in Stage.layInFront)
+					var positions = Stage.positions[Stage.curStage];
+					if (positions != null)
 					{
-						switch (index)
+						for (char => pos in positions)
+							for (person in [boyfriend, gf, dad])
+								if (person.curCharacter == char)
+									person.setPosition(pos[0], pos[1]);
+					}
+					for (i in Stage.toAdd)
+						add(i);
+
+						for (index => array in Stage.layInFront)
 						{
-							case 0:
-								add(gf);
-								gf.scrollFactor.set(0.95, 0.95);
-								for (bg in array)
-									add(bg);
-							case 1:
-								add(dad);
-								for (bg in array)
-									add(bg);
-							case 2:
-								add(boyfriend);
-								for (bg in array)
-									add(bg);
+							switch (index)
+							{
+								case 0:
+									add(gf);
+									gf.scrollFactor.set(0.95, 0.95);
+									for (bg in array)
+										add(bg);
+								case 1:
+									add(dad);
+									for (bg in array)
+										add(bg);
+								case 2:
+									add(boyfriend);
+									for (bg in array)
+										add(bg);
+						}
 					}
-				}
 		}else if (stageType == "json"){
-			var requestedStage:String = 'data/stages/${SONG.stage}.json'; // So I don't have to type much.
 
-			// Loading JSON File and Confirms Load
-					//if (curStage == null || curStage.length < 1) curStage = 'stage';
-
-                    //parsedFile = haxe.Json.parse(sys.io.File.getContent('assets/data/stages/$curStage.json'));
-                    //trace('Loading stage file: $curStage as assets/data/stages/$curStage.json');
-                    currentSpriteLoader = parsedFile.sprites;
-
-					if (Paths.doesTextAssetExist(requestedStage)){
-
-						parsedFile = Json.parse(Paths.file(requestedStage));
-						trace('Loaded stafe file for $curStage from: $requestedStage');
-
-					}
+				parsedFile = haxe.Json.parse("{}"); //jsonloading is broken :(
 
 				stageSpriteCollection = new FlxTypedGroup<FlxSprite>();
 				add (stageSpriteCollection);
-
+					if (currentSpriteLoader != null && currentSpriteLoader.length > 0){ // So empty JSONs don't crash the game.
 						for (i in currentSpriteLoader){ // for sprites in either front or back. Removed some null checks. Screw it, we ball.
 									if (i.type == "bgSprite"){
 													levelSprite = new FlxSprite(i.x, i.y); // For variables x and y in the json. Ints, all real numbers.
@@ -578,6 +579,7 @@ class PlayState extends MusicBeatState
 								}else if (i.type == "dad"){
 										add(dad);
 								}
+						}
 					}
 					//add (stageSpriteCollection);
 		}
