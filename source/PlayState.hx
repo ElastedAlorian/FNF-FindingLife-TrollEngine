@@ -481,48 +481,21 @@ class PlayState extends MusicBeatState
 		//add(boyfriend);
 
 		//var requestedStage:String = 'stages/${SONG.stage}'; // So I don't have to type much.
-		var requestedStage:String = 'data/stages/${SONG.stage}.json';
+		var requestedStage:String = 'stages/' + SONG.stage;
 		trace(requestedStage);
 
-		/*if (Paths.doesTextAssetExist('assets/data/$requestedStage.json')){
-						trace('Requested stage exists! Asset: $requestedStage');
-						stageType = "json";
-		}else{
-						trace('Requested stage does not exist. Loading hardcoded stage. Needed file: $requestedStage');
-						stageType = "hardcoded";
-		}*/
-		if (Paths.doesTextAssetExist(requestedStage)){
-				parsedFile = Json.parse(Paths.file(requestedStage));
+		if ((Paths.loadJSON(requestedStage)) != null){ // Checks for the stage JSON.
+				parsedFile = Paths.loadJSON(requestedStage);
 				trace('Loaded stafe file for $curStage from: $requestedStage');
+				trace('Requested stage exists! Asset: $requestedStage');
 				stageType = "json";
+				trace("3 - Load isn't null!");
 		}else{
 				stageType = "hardcoded";
+				trace('Requested stage does not exist. Loading hardcoded stage. Needed file: $requestedStage');
+				trace("4 - Load is null.");
 		}
 		trace(SONG.stage);
-
-
-		// TESTING
-		if (Paths.doesStageAssetExist(SONG.stage)){
-			trace('Does exist' + Paths.gameStage(SONG.stage));
-		}else{
-			trace('Does not exist: ' + Paths.gameStage(SONG.stage));
-		}
-
-		// Example from Kade Engine:
-			// if (Paths.doesTextAssetExist(Paths.txt('data/songs/${PlayState.SONG.songId}/dialogue')))
-
-		if (Paths.doesTextAssetExist(Paths.txt('assets/data/stages/$[SONG.stage].json'))){
-			trace('1 - Does exist' + Paths.gameStage(SONG.stage));
-		}else{
-			trace('2 - Does not exist: ' + Paths.gameStage(SONG.stage));
-		}
-
-		if ((Paths.loadJSON('stages/' + SONG.stage )) != null){
-			trace("3 - Load isn't null!");
-		}else{
-			trace("4 - Load is null)");
-		}
-
 
 		// Kade Engine Method
 		if (stageType == null){ // Only if the stage isn't specified.

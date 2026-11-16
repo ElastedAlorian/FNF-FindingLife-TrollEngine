@@ -238,11 +238,6 @@ class Paths
 		return OpenFlAssets.exists(path, AssetType.TEXT);
 	}
 
-	inline static public function doesStageAssetExist(path:String)
-	{
-		trace(OpenFlAssets.exists('stages/$path.json', AssetType.TEXT));
-		return OpenFlAssets.exists('stages/$path.json', AssetType.TEXT);
-	}
 
 	inline static public function image(key:String, ?library:String)
 	{
