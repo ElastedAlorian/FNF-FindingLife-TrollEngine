@@ -8,13 +8,13 @@
         359
     ],
 
-    "directory":"mainStage/0percent",
+    "directory":"mainStage",
 
     "sprites":[
         {
            "type":"bgSprite",
            "title":"bg",
-            "graphic":"stageback",
+            "graphic":"stage-back",
             "x":-600,
             "y":-200,
             "antialiasing":true,
@@ -23,7 +23,7 @@
          {
             "type":"bgSprite",
             "title":"stageFront",
-            "graphic":"stagefront",
+            "graphic":"stage-front",
             "x":-650,
             "y":-600,
             "scale":[1.1, 1],
@@ -33,7 +33,7 @@
          {
            "type":"bgSprite",
             "title":"stageCurtains",
-            "graphic":"stagecurtains",
+            "graphic":"stage-curtains",
             "x":-500,
             "y":-300,
             "antialiasing":true,

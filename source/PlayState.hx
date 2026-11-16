@@ -547,12 +547,11 @@ class PlayState extends MusicBeatState
 													levelSprite = new FlxSprite(i.x, i.y); // For variables x and y in the json. Ints, all real numbers.
 
 													if (parsedFile.directory != null)
-														levelSprite.loadGraphic(Paths.loadImage(parsedFile.directory + '/' + i.graphic)); //directory and graphic.
-															// This assumes that the graphics are already in a subfolder of the shared/images/stages folder.
-															// Don't end it in / this time.
-															// Due to how Paths.hx works, the files can't end with .png when referenced in the stage's json files.
+														//levelSprite.loadGraphic(Paths.file("shared/images/stages/" + parsedFile.directory + '/' + i.graphic + ".png")); //does not work sadly, no clue why.
+														levelSprite.loadGraphic(Paths.loadImage("stages/" + parsedFile.directory + '/' + i.graphic + "")); //directory and graphic.
 													else
-														levelSprite.loadGraphic(Paths.loadImage(i.graphic)); //graphic
+														//levelSprite.loadGraphic(Paths.file("shared/images/stages/" + i.graphic + ".png")); //graphic
+														levelSprite.loadGraphic(Paths.loadImage("stages/" +  i.graphic + "")); //directory and graphic.
 
 													levelSprite.flipX = i.flipX; //flipX || bool: true/false
 													levelSprite.flipY = i.flipY; //flipY

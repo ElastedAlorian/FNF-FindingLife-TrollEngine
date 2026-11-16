@@ -114,8 +114,7 @@ class ChartingState extends MusicBeatState
 		leftIcon.setGraphicSize(0, 45);
 		rightIcon.setGraphicSize(0, 45);
 
-		add(playerStrumDisplayer);
-		add(opponentStrumDisplayer);
+
 		add(leftIcon);
 		add(rightIcon);
 
@@ -125,6 +124,8 @@ class ChartingState extends MusicBeatState
 		var gridBlackLine:FlxSprite = new FlxSprite(gridBG.x + gridBG.width / 2).makeGraphic(2, Std.int(gridBG.height), FlxColor.BLACK);
 		add(gridBlackLine);
 
+		add(playerStrumDisplayer);
+		add(opponentStrumDisplayer);
 
 		curRenderedNotes = new FlxTypedGroup<Note>();
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
