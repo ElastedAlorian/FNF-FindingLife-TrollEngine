@@ -170,6 +170,8 @@ class PlayState extends MusicBeatState
 				public 	var stageCheck:String = 'stage'; // Kade Engine
 				public 	var stageType:String; // Custom method, trying to differenciate the old and new formats.
 
+		var characterOffsetHelper:Array<Dynamic>;
+
 
 	override public function create()
 	{
@@ -539,11 +541,13 @@ class PlayState extends MusicBeatState
 				//parsedFile = haxe.Json.parse("{}"); //jsonloading was  broken :(
 				currentSpriteLoader = parsedFile.sprites; // I forgot to include this line, and because of it, nothing loaded in-game.
 
+				characterOffsetHelper = parsedFile.positions;
+
 				stageSpriteCollection = new FlxTypedGroup<FlxSprite>();
 				//add (stageSpriteCollection);
 					if (currentSpriteLoader != null && currentSpriteLoader.length > 0){ // So empty JSONs don't crash the game.
 						for (i in currentSpriteLoader){ // for sprites in either front or back. Removed some null checks. Screw it, we ball.
-									if (i.type == "bgSprite"){
+								if (i.type == "bgSprite"){
 													levelSprite = new FlxSprite(i.x, i.y); // For variables x and y in the json. Ints, all real numbers.
 
 													if (parsedFile.directory != null)
@@ -586,7 +590,24 @@ class PlayState extends MusicBeatState
 								}
 						}
 					}
-				add (stageSpriteCollection);
+					add (stageSpriteCollection);
+					if (currentSpriteLoader != null && currentSpriteLoader.length > 0){
+						/*for (i in characterOffsetHelper){ // Character positions. Psych stage.json mechanical engineering.
+								if (i.bf != null && boyfriend != null){
+									boyfriend.x += i.bf[0];
+									boyfriend.y += i.bf[1];
+								}
+								if (i.gf != null && gf != null){
+									gf.x += i.gf[0];
+									gf.y += i.gf[1];
+								}
+								if (i.dad != null && dad != null){
+									dad.x += i.dad[0];
+									dad.y += i.dad[1];
+								}
+							}*/
+					}
+
 		}
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
